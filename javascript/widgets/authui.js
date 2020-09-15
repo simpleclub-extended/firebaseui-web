@@ -683,9 +683,12 @@ firebaseui.auth.AuthUI.prototype.getUpgradableUser_ = function() {
   // triggered.
   // Auto upgrade must be enabled and the current external user must be
   // anonymous.
-  if (this.getConfig().autoUpgradeAnonymousUsers() &&
-      this.currentUser_ &&
-      this.currentUser_['isAnonymous']) {
+
+  var isAnonymous =
+    this.currentUser_ &&
+    (this.currentUser_['isAnonymous'] || !this.currentUser_['providerData'] || this.currentUser_['providerData'].length == 0);
+
+  if (this.getConfig().autoUpgradeAnonymousUsers() && isAnonymous) {
     return this.currentUser_;
   }
   return null;
